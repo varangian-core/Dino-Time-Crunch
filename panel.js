@@ -385,7 +385,7 @@ function reset() {
   gameStarted = true;
   playMusic(); // Start playing the music when the game resets
 
-  // showLeaderboardModal();
+  showLeaderboardModal();
 }
 
 
