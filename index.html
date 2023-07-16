@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dino Game</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        body {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: white;
+
+            user-select: none;
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            outline: none;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 70%;
+            height: 70%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+
+        canvas {
+            border: 0.1px solid grey;
+        }
+
+        a {
+            color: rgb(161, 157, 157);
+        }
+
+        .links {
+            margin-bottom: 20px;
+            font-weight: normal;
+            font-size: 1.2em;
+        }
+
+        .separator {
+            color: grey;
+        }
+
+        .volume-control {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .volume-label {
+            margin-right: 10px;
+        }
+
+        .volume-range {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 200px;
+            height: 5px;
+            background-color: #d3d3d3;
+            outline: none;
+            margin-right: 10px;
+        }
+
+        .volume-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: blue;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .volume-range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background-color: blue;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .volume-value {
+            font-weight: bold;
+        }
+
+        .leaderboard-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-image: url("imagesodal.png");
+            background-size: cover;
+            width: 80%;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            color: deepskyblue;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .leaderboard-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: deepskyblue;
+            color: white;
+        }
+
+        .leaderboard-table tr:first-child td {
+            padding-top: 0;
+        }
+
+        .leaderboard-table tr:last-child td {
+            padding-bottom: 0;
+        }
+
+        .leaderboard-modal-content {
+            overflow: auto;
+        }
+    </style>
+    <script src="panel.js" defer type="module"></script>
+    <script>
+        let audio;
+        let volumeRange;
+        let volumeValue;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            audio = new Audio("music/I_Can_Explain2.wav");
+            audio.loop = true;
+            audio.volume = 1;
+
+            volumeRange = document.getElementById("volume-range");
+            volumeValue = document.getElementById("volume-value");
+
+            volumeRange.addEventListener("input", () => {
+                const volume = volumeRange.value / 100;
+                updateMusicVolume(volume);
+            });
+
+            function updateMusicVolume(volume) {
+                audio.volume = volume;
+                if (volume === 0) {
+                    audio.muted = true;
+                } else {
+                    audio.muted = false;
+                }
+                volumeValue.textContent = Math.round(volume * 100);
+            }
+
+            volumeRange.value = 50;
+            updateMusicVolume(0.5);
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="canvas-container">
+    <canvas id="game"></canvas>
+</div>
+<script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
+<script src="config.js"></script>
+</body>
+
+</html>
